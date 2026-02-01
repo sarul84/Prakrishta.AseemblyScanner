@@ -95,9 +95,14 @@ services.Scan(s => s
     .WithSummary(out var summary));
 ```
 
+✔ Build status:
+[![Build Status](https://github.com/sarul84/Prakrishta.AseemblyScanner/actions/workflows/dotnet.yml/badge.svg)](https://github.com/sarul84/Prakrishta.AseemblyScanner/actions/workflows/dotnet.yml)
+
+Package version: ![NuGet](https://img.shields.io/nuget/v/Prakrishta.AseemblyScanner)
+
 📦 Installation
 ```
-dotnet add package Prakrishta.AssemblyScanner
+Install-Package Prakrishta.AssemblyScanner
 ```
 
 🚀 Quick Start
