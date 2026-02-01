@@ -11,14 +11,16 @@
 	<PackageProjectUrl>https://github.com/sarul84/Prakrishta.AseemblyScanner</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/sarul84/Prakrishta.AseemblyScanner</RepositoryUrl>
 	<PackageTags>C#, Assembly</PackageTags>
-	<Copyright>Copyright © Prakrishta Technologies 2017</Copyright>
+	<Copyright>Copyright © Prakrishta Technologies 2026</Copyright>
 	<Nullable>enable</Nullable>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
     <None Include="..\README.md" Pack="true" PackagePath="" />
+	<None Include="..\LICENSE.txt" Pack="true" PackagePath=""/>
   </ItemGroup>
 
 </Project>
