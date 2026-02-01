@@ -1,8 +1,8 @@
 ﻿
-namespace Prakrishta.AseemblyScanner.Extensions
+namespace Prakrishta.AssemblyScanner.Extensions
 {
     using Microsoft.Extensions.DependencyInjection;
-    using Prakrishta.AseemblyScanner;
+    using Prakrishta.AssemblyScanner;
 
     public static class ServiceCollectionExtensions
     {

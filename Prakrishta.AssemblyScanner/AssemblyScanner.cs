@@ -7,11 +7,11 @@
 // <summary>The class that helps to register interfaces and implementation in an assembly</summary>
 //-----------------------------------------------------------------------------------
 
-namespace Prakrishta.AseemblyScanner
+namespace Prakrishta.AssemblyScanner
 {
     using Microsoft.Extensions.DependencyInjection;
     using Prakrishta.AseemblyScanner.Enum;
-    using Prakrishta.AseemblyScanner.Extensions;
+    using Prakrishta.AssemblyScanner.Extensions;
     using Prakrishta.AseemblyScanner.Helper;
     using Prakrishta.Infrastructure.Helper;
     using System;

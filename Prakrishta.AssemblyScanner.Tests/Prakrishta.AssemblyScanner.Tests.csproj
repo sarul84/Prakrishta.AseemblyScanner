@@ -18,8 +18,8 @@
     <PackageReference Include="MSTest.TestFramework" Version="4.0.2" />
   </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\Prakrishta.AseemblyScanner\Prakrishta.AseemblyScanner.csproj" />
-	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Prakrishta.AssemblyScanner\Prakrishta.AssemblyScanner.csproj" />
+  </ItemGroup>
 
 </Project>

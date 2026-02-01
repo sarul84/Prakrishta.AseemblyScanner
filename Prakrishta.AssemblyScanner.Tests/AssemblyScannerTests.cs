@@ -2,7 +2,7 @@ namespace Prakrishta.AssemblyScanner.Tests
 {
     using FluentAssertions;
     using Microsoft.Extensions.DependencyInjection;
-    using Prakrishta.AseemblyScanner.Extensions;
+    using Prakrishta.AssemblyScanner.Extensions;
     using Prakrishta.AssemblyScanner.Test;
     using Prakrishta.AssemblyScanner.Test.TestServices;
     using Prakrishta.AssemblyScanner.Test.TestServices.Sub;
