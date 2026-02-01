@@ -96,7 +96,7 @@ services.Scan(s => s
 ```
 
 ✔ Build status:
-[![Build Status](https://github.com/sarul84/Prakrishta.AseemblyScanner/actions/workflows/dotnet.yml/badge.svg)](https://github.com/sarul84/Prakrishta.AseemblyScanner/actions/workflows/dotnet.yml)
+[![Build Status](https://github.com/sarul84/Prakrishta.AseemblyScanner/actions/workflows/build.yml/badge.svg)](https://github.com/sarul84/Prakrishta.AseemblyScanner/actions/workflows/build.yml)
 
 Package version: ![NuGet](https://img.shields.io/nuget/v/Prakrishta.AseemblyScanner)
 
