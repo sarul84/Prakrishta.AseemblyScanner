@@ -3,11 +3,22 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	<Authors>Arul Sengottaiyan</Authors>
+	<Company>Prakrishta Technologies</Company>
+	<Version>1.0.0</Version>
+	<AssemblyVersion>1.0.0.0</AssemblyVersion>
+	<Description>A lightweight, fluent, production‑grade assembly scanning library for .NET</Description>
+	<PackageProjectUrl>https://github.com/sarul84/Prakrishta.AseemblyScanner</PackageProjectUrl>
+	<RepositoryUrl>https://github.com/sarul84/Prakrishta.AseemblyScanner</RepositoryUrl>
+	<PackageTags>C#, Assembly</PackageTags>
+	<Copyright>Copyright © Prakrishta Technologies 2017</Copyright>
+	<Nullable>enable</Nullable>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    <None Include="..\README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>

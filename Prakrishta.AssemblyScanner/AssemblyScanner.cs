@@ -173,6 +173,12 @@ namespace Prakrishta.AssemblyScanner
 
                     var implList = implementations.ToList();
 
+                    if (_strategy == RegistrationStrategy.Skip && _services.Any(s => s.ServiceType == interfaceType))
+                    {
+                        Log($"Skipping all registrations for {interfaceType.Name} (Skip strategy)");
+                        continue;
+                    }
+
                     foreach (var impl in implList)
                     {
                         foreach (var iface in impl.ImplementedInterfaces)

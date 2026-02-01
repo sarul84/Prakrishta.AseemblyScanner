@@ -2,6 +2,8 @@ namespace Prakrishta.AssemblyScanner.Tests
 {
     using FluentAssertions;
     using Microsoft.Extensions.DependencyInjection;
+    using Prakrishta.AseemblyScanner.Enum;
+    using Prakrishta.AseemblyScanner.Helper;
     using Prakrishta.AssemblyScanner.Extensions;
     using Prakrishta.AssemblyScanner.Test;
     using Prakrishta.AssemblyScanner.Test.TestServices;
@@ -225,7 +227,7 @@ namespace Prakrishta.AssemblyScanner.Tests
             services.Scan(s => s
                 .FromAssemblies(_assembly)
                 .AddClassesAssignableTo(typeof(ITestService))
-                .ExcludeNamespace("Prakrishta.Infrastructure.Test.TestServices.Sub")
+                .ExcludeNamespace("Prakrishta.AssemblyScanner.Test.TestServices.Sub")
                 .AsScoped());
 
             var provider = services.BuildServiceProvider();
@@ -353,7 +355,7 @@ namespace Prakrishta.AssemblyScanner.Tests
             services.Scan(s => s
                 .FromAssemblies(_assembly)
                 .AddClassesAssignableTo(typeof(ITestService))
-                .WithNamespace("Prakrishta.Infrastructure.Test.TestServices.SubNamespace")
+                .WithNamespace("Prakrishta.AssemblyScanner.Test.TestServices.SubNamespace")
                 .AsScoped());
 
             var provider = services.BuildServiceProvider();
@@ -494,5 +496,169 @@ namespace Prakrishta.AssemblyScanner.Tests
 
             s1.Should().NotBeSameAs(s2);
         }
+
+        // ---------------------------------------------------------
+        // 1. Assemblies + InterfaceTypes
+        // ---------------------------------------------------------
+        [TestMethod]
+        public void Summary_Should_Contain_Scanned_Assemblies_And_InterfaceTypes()
+        {
+            var services = new ServiceCollection();
+
+            RegistrationSummary? summary = null;
+
+            services.Scan(s => s
+                .FromAssemblies(_assembly)
+                .AddClassesAssignableTo(typeof(ITestService))
+                .WithSummary(out summary)
+                .AsScoped());
+
+            summary!.Assemblies.Should().Contain(_assembly.FullName);
+            summary!.InterfaceTypes.Should().Contain(typeof(ITestService).FullName);
+        }
+
+        // ---------------------------------------------------------
+        // 2. Registered mappings
+        // ---------------------------------------------------------
+        [TestMethod]
+        public void Summary_Should_List_All_Registered_Mappings()
+        {
+            var services = new ServiceCollection();
+
+            RegistrationSummary? summary = null;
+
+            services.Scan(s => s
+                .FromAssemblies(_assembly)
+                .AddClassesAssignableTo(typeof(ITestService))
+                .WithSummary(out summary)
+                .AsScoped());
+
+            summary!.Registered.Should().Contain(r => r.Contains("ITestService") && r.Contains("TestService"));
+            summary!.Registered.Should().Contain(r => r.Contains("ITestService") && r.Contains("AnotherTestService"));
+        }
+
+        // ---------------------------------------------------------
+        // 3. Excluded types
+        // ---------------------------------------------------------
+        [TestMethod]
+        public void Summary_Should_List_Excluded_Types()
+        {
+            var services = new ServiceCollection();
+            RegistrationSummary? summary = null;
+
+            services.Scan(s => s
+                .FromAssemblies(_assembly)
+                .AddClassesAssignableTo(typeof(ITestService))
+                .Exclude(t => t.Name.Contains("Another"))
+                .WithSummary(out summary)
+                .AsScoped());
+
+            summary!.Excluded.Should().Contain("AnotherTestService");
+            summary!.Registered.Should().NotContain(r => r.Contains("AnotherTestService"));
+        }
+
+        // ---------------------------------------------------------
+        // 4. Decorators applied
+        // ---------------------------------------------------------
+        [TestMethod]
+        public void Summary_Should_List_Applied_Decorators()
+        {
+            var services = new ServiceCollection();
+            RegistrationSummary? summary = null;
+
+            services.Scan(s => s
+                .FromAssemblies(_assembly)
+                .AddClassesAssignableTo(typeof(ITestService))
+                .Include(t => t.Name == nameof(TestService)) // ensure single impl
+                .Pipeline(p => p.Use(typeof(LoggingDecorator)))
+                .WithSummary(out summary)
+                .AsScoped());
+
+            summary!.DecoratorsApplied.Should().Contain(d => d.Contains("LoggingDecorator"));
+        }
+
+        // ---------------------------------------------------------
+        // 5. Summary should reflect registration strategy: Skip
+        // ---------------------------------------------------------
+        [TestMethod]
+        public void Summary_Should_Respect_Registration_Strategy_Skip()
+        {
+            var services = new ServiceCollection();
+
+            // Pre-register service
+            services.AddScoped<ITestService, TestService>();
+            RegistrationSummary? summary = null;
+
+            services.Scan(s => s
+                .FromAssemblies(_assembly)
+                .AddClassesAssignableTo(typeof(ITestService))
+                .WithStrategy(RegistrationStrategy.Skip)
+                .WithSummary(out summary)
+                .AsScoped());
+            
+            summary!.Registered.Should().BeEmpty();
+        }
+
+        // ---------------------------------------------------------
+        // 6. Summary should reflect registration strategy: Replace
+        // ---------------------------------------------------------
+        [TestMethod]
+        public void Summary_Should_Respect_Registration_Strategy_Replace()
+        {
+            var services = new ServiceCollection();
+
+            // Pre-register service
+            services.AddScoped<ITestService, AnotherTestService>();
+            RegistrationSummary? summary = null;
+
+            services.Scan(s => s
+                .FromAssemblies(_assembly)
+                .AddClassesAssignableTo(typeof(ITestService))
+                .WithStrategy(RegistrationStrategy.Replace)
+                .WithSummary(out summary)
+                .AsScoped());
+
+            summary!.Registered.Should().Contain(r => r.Contains("TestService"));
+        }
+
+        // ---------------------------------------------------------
+        // 7. Summary should reflect include filters
+        // ---------------------------------------------------------
+        [TestMethod]
+        public void Summary_Should_Reflect_Include_Filters()
+        {
+            var services = new ServiceCollection();
+            RegistrationSummary? summary = null;
+
+            services.Scan(s => s
+                .FromAssemblies(_assembly)
+                .AddClassesAssignableTo(typeof(ITestService))
+                .Include(t => t.Name == nameof(TestService))
+                .WithSummary(out summary)
+                .AsScoped());
+
+            summary!.Registered.Should().Contain(r => r.Contains("TestService"));
+            summary!.Registered.Should().NotContain(r => r.Contains("AnotherTestService"));
+        }
+
+        // ---------------------------------------------------------
+        // 8. Summary should reflect namespace exclusion
+        // ---------------------------------------------------------
+        [TestMethod]
+        public void Summary_Should_Reflect_Namespace_Exclusion()
+        {
+            var services = new ServiceCollection();
+            RegistrationSummary? summary = null;
+
+            services.Scan(s => s
+                .FromAssemblies(_assembly)
+                .AddClassesAssignableTo(typeof(ITestService))
+                .ExcludeNamespace("Prakrishta.AssemblyScanner.Test.TestServices.Sub")
+                .WithSummary(out summary)
+                .AsScoped());
+
+            summary!.Excluded.Should().Contain("SubNamespaceService");
+        }
+
     }
 }
