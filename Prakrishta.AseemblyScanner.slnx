@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Prakrishta.AseemblyScanner/Prakrishta.AseemblyScanner.csproj" />
+  <Project Path="Prakrishta.AssemblyScanner.Tests/Prakrishta.AssemblyScanner.Tests.csproj" />
+</Solution>
